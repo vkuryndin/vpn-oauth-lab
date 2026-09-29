@@ -5,3 +5,15 @@ services:
     ports:
       - "10.10.10.1:5000:5000"
     restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.4
+    container_name: vpn-oauth-keycloak
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "10.10.10.1:8180:8080"
+    mem_limit: 1g
+    restart: unless-stopped
