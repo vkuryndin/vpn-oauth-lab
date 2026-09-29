@@ -4,6 +4,7 @@ import socket
 
 import os
 from authlib.integrations.flask_client import OAuth
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -20,21 +21,32 @@ oauth.register(
         "scope": "openid profile email"
     }
 )
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if "user" not in session:
+            return redirect(url_for("login"))
+        return view(*args, **kwargs)
+
+    return wrapped_view
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
 @app.route("/page1")
+@login_required
 def page1():
     return render_template("page1.html")
 
 
 @app.route("/page2")
+@login_required
 def page2():
     return render_template("page2.html")
 
 @app.route("/info")
+@login_required
 def info():
     return render_template(
         "info.html",
@@ -57,6 +69,14 @@ def auth_callback():
     session["user"] = user
 
     return redirect(url_for("home"))
+
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template(
+        "profile.html",
+        user=session["user"]
+    )
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

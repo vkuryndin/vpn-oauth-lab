@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - VPN OAuth Lab{% endblock %}
+
+{% block content %}
+<h2>User Profile</h2>
+
+<p><b>Username:</b> {{ user.get("preferred_username", "unknown") }}</p>
+<p><b>Name:</b> {{ user.get("name", "not specified") }}</p>
+<p><b>Email:</b> {{ user.get("email", "not specified") }}</p>
+
+<p>Authentication provider: Keycloak (OAuth 2.0 / OpenID Connect)</p>
+{% endblock %}
