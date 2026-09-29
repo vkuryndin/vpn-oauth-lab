@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Server Info - VPN OAuth Lab{% endblock %}
+
+{% block content %}
+<h2>Application Information</h2>
+
+<p><b>Application:</b> VPN OAuth Lab</p>
+<p><b>Hostname:</b> {{ hostname }}</p>
+<p><b>Operating system:</b> {{ os_name }} {{ os_version }}</p>
+<p><b>Python:</b> {{ python_version }}</p>
+<p><b>Framework:</b> Flask</p>
+<p><b>Application port:</b> 5000</p>
+{% endblock %}
