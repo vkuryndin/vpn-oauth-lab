@@ -86,6 +86,7 @@ def logout():
     session.clear()
 
     params = {
+        "client_id": "flask-app",
         "post_logout_redirect_uri": "http://10.10.10.1:5000/",
     }
 
