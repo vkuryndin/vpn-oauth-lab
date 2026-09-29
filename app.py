@@ -59,8 +59,10 @@ def info():
 @app.route("/login")
 def login():
     redirect_uri = url_for("auth_callback", _external=True)
-    return oauth.keycloak.authorize_redirect(redirect_uri)
-
+    return oauth.keycloak.authorize_redirect(
+        redirect_uri,
+        prompt="login"
+    )
 
 @app.route("/auth/callback")
 def auth_callback():
@@ -87,7 +89,7 @@ def logout():
 
     params = {
         "client_id": "flask-app",
-        "post_logout_redirect_uri": "http://10.10.10.1:5000/",
+        "post_logout_redirect_uri": "http://10.10.10.1:5000/login",
     }
 
     if id_token:
