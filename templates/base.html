@@ -13,8 +13,14 @@
     <a href="/page1">Page 1</a> |
     <a href="/page2">Page 2</a> |
     <a href="/info">Server Info</a> |
-    <a href="/profile">Profile</a> |
-    <a href="/logout">Logout</a>
+    <a href="/profile">Profile</a>
+
+    {% if session.get("user") %}
+        | Logged in as <b>{{ session["user"].get("preferred_username", "user") }}</b>
+        | <a href="/logout">Logout</a>
+    {% else %}
+        | <a href="/login">Login</a>
+    {% endif %}
 </nav>
 
 <hr>
