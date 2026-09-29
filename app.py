@@ -5,6 +5,7 @@ import socket
 import os
 from authlib.integrations.flask_client import OAuth
 from functools import wraps
+from urllib.parse import urlencode
 
 app = Flask(__name__)
 
@@ -67,6 +68,7 @@ def auth_callback():
     user = token.get("userinfo")
 
     session["user"] = user
+    session["id_token"] = token.get("id_token")
 
     return redirect(url_for("home"))
 
@@ -77,6 +79,26 @@ def profile():
         "profile.html",
         user=session["user"]
     )
+@app.route("/logout")
+def logout():
+    id_token = session.get("id_token")
+
+    session.clear()
+
+    params = {
+        "post_logout_redirect_uri": "http://10.10.10.1:5000/",
+    }
+
+    if id_token:
+        params["id_token_hint"] = id_token
+
+    logout_url = (
+        "http://10.10.10.1:8180/"
+        "realms/vpn-oauth-lab/protocol/openid-connect/logout?"
+        + urlencode(params)
+    )
+
+    return redirect(logout_url)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
